@@ -46,7 +46,12 @@ namespace TicTacToe
 
 		public FieldCell this[int x, int y] => cells[x, y];
 
-		public bool FindWinnerRow(FieldCell lastCell)
+		public bool FindWinner(FieldCell lastCell)
+		{
+			return FindWinnerColumn(lastCell) || FindWinnerRow(lastCell) || FindWinnerDiagonal(lastCell) || FindWinnerAntidiagonal(lastCell);
+		}
+
+		private bool FindWinnerRow(FieldCell lastCell)
 		{
 			Player lastPlayer = Player.None;
 			for(int y = 0; y < cells.GetLength(0); ++y)
@@ -61,7 +66,7 @@ namespace TicTacToe
 			return true;
 		}
 
-		public bool FindWinnerColumn(FieldCell lastCell)
+		private bool FindWinnerColumn(FieldCell lastCell)
 		{
 			Player lastPlayer = Player.None;
 			for(int x = 0; x < cells.GetLength(0); ++x)
@@ -76,7 +81,7 @@ namespace TicTacToe
 			return true;
 		}
 
-		public bool FindWinnerDiagonal(FieldCell lastCell)
+		private bool FindWinnerDiagonal(FieldCell lastCell)
 		{
 			if(lastCell.Row == lastCell.Column)
 			{
@@ -95,7 +100,7 @@ namespace TicTacToe
 			return false;
 		}
 
-		public bool FindWinnerAntidiagonal(FieldCell lastCell)
+		private bool FindWinnerAntidiagonal(FieldCell lastCell)
 		{
 			if(lastCell.Row == cells.GetLength(0) - 1 - lastCell.Column)
 			{
@@ -112,11 +117,6 @@ namespace TicTacToe
 				return true;
 			}
 			return false;
-		}
-
-		public bool FindWinner(FieldCell lastCell)
-		{
-			return FindWinnerColumn(lastCell) || FindWinnerRow(lastCell) || FindWinnerDiagonal(lastCell) || FindWinnerAntidiagonal(lastCell);
 		}
 	}
 }
