@@ -24,8 +24,8 @@ namespace TicTacToe
 		private void Awake()
 		{
 			// TODO: Implement player type loading.
-			players.Add(Player.Player1, new HumanPlayer(selectorPool, Field, OnCellSelected, Player.Player1));
-			players.Add(Player.Player2, new HumanPlayer(selectorPool, Field, OnCellSelected, Player.Player2));
+			players.Add(Player.Player1, new HumanPlayer(selectorPool, Field, OnCellSelected));
+			players.Add(Player.Player2, new AIPlayer(Field, OnCellSelected, Player.Player2));
 		}
 
 		private void Start()
@@ -42,7 +42,7 @@ namespace TicTacToe
 				yield return new WaitUntil(() => moveFinished);
 				if(state == MatchState.Won)
 				{
-					Debug.Log($"{nameof(currentPlayer)} won");
+					Debug.Log($"{(currentPlayer == Player.Player1 ? "Player 1" : "Player 2")} won");
 					yield break;
 				}
 				else if(state == MatchState.Tie)
@@ -56,8 +56,9 @@ namespace TicTacToe
 
 		private void OnCellSelected(FieldCell cell)
 		{
+			Field[cell.Row, cell.Column].OwnedBy = currentPlayer;
 			fieldVisualizer.UpdateCell(cell.Row, cell.Column, currentPlayer);
-			if(Field.FindWinnerRow(cell) || Field.FindWinnerColumn(cell) || Field.FindWinnerDiagonal(cell) || Field.FindWinnerAntidiagonal(cell))
+			if(Field.FindWinner(cell))
 			{
 				state = MatchState.Won;
 			}

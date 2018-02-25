@@ -22,7 +22,13 @@ namespace TicTacToe
 
 		public FieldState(FieldState other)
 		{
-			Array.Copy(other.cells, cells, Dimension * Dimension);
+			for(int i = 0; i < cells.GetLength(0); ++i)
+			{
+				for(int j = 0; j < cells.GetLength(1); ++j)
+				{
+					cells[i, j] = new FieldCell(other.cells[i, j]);
+				}
+			}
 		}
 
 		public List<FieldCell> FindFreeCells()
@@ -106,6 +112,11 @@ namespace TicTacToe
 				return true;
 			}
 			return false;
+		}
+
+		public bool FindWinner(FieldCell lastCell)
+		{
+			return FindWinnerColumn(lastCell) || FindWinnerRow(lastCell) || FindWinnerDiagonal(lastCell) || FindWinnerAntidiagonal(lastCell);
 		}
 	}
 }
