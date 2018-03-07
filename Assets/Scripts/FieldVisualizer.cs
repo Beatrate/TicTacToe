@@ -19,5 +19,14 @@ namespace TicTacToe
 			current.color = skin.GetPlayerTint(currentPlayer);
 			current.enabled = true;
 		}
+
+		public void ResetAll()
+		{
+			foreach(Image image in cells)
+			{
+				image.enabled = false;
+				image.sprite = null;
+			}
+		}
 	}
 }

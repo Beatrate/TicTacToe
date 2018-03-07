@@ -23,5 +23,10 @@ namespace TicTacToe
 		{
 
 		}
+
+		public override string ToString()
+		{
+			return OwnedBy == Player.None ? "_" : OwnedBy == Player.Player1 ? "X" : "O";
+		}
 	}
 }

@@ -24,22 +24,22 @@ namespace TicTacToe
 			Tuple<int, FieldCell> bestMove = new Tuple<int, FieldCell>(-1000, new FieldCell(0, 0));
 			foreach(FieldCell cell in freeCells)
 			{
-				FieldState newField = new FieldState(field);
-				newField[cell.Row, cell.Column].OwnedBy = player;
-				int score = MinMax(newField, player == Player.Player1 ? Player.Player2 : Player.Player1, newField[cell.Row, cell.Column]);
+				cell.OwnedBy = player;
+				int score = MinMax(player == Player.Player1 ? Player.Player2 : Player.Player1, cell);
 				if(score > bestMove.Item1)
 				{
 					bestMove = new Tuple<int, FieldCell>(score, cell);
 				}
+				cell.OwnedBy = Player.None;
 			}
 			finishCallback(bestMove.Item2);
 		}
 
-		private int MinMax(FieldState fieldState, Player currentPlayer, FieldCell cell, int depth = 0)
+		private int MinMax(Player currentPlayer, FieldCell cell, int depth = 0)
 		{
 			++depth;
-			List<FieldCell> freeCells = fieldState.FindFreeCells();
-			if(fieldState.FindWinner(cell))
+			List<FieldCell> freeCells = field.FindFreeCells();
+			if(field.FindWinner(cell))
 			{
 				if(cell.OwnedBy == player)
 				{
@@ -58,16 +58,16 @@ namespace TicTacToe
 			List<int> scores = new List<int>();
 			foreach(FieldCell freeCell in freeCells)
 			{
-				FieldState newField = new FieldState(fieldState);
-				newField[freeCell.Row, freeCell.Column].OwnedBy = currentPlayer;
+				freeCell.OwnedBy = currentPlayer;
 				if(currentPlayer == player)
 				{
-					scores.Add(MinMax(newField, player == Player.Player1 ? Player.Player2 : Player.Player1, newField[freeCell.Row, freeCell.Column], depth));
+					scores.Add(MinMax(player == Player.Player1 ? Player.Player2 : Player.Player1, freeCell, depth));
 				}
 				else
 				{
-					scores.Add(MinMax(newField, player, newField[freeCell.Row, freeCell.Column], depth));
+					scores.Add(MinMax(player, freeCell, depth));
 				}
+				freeCell.OwnedBy = Player.None;
 
 			}
 			scores.Sort();

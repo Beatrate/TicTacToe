@@ -4,7 +4,7 @@ using UnityEngine.Events;
 namespace TicTacToe
 {
 	[Serializable]
-	public class UnityEventIntInt : UnityEvent<int, int>
+	public class UnityEventPlayer : UnityEvent<Player>
 	{
 
 	}

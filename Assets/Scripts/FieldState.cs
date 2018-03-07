@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace TicTacToe
 {
@@ -31,6 +32,14 @@ namespace TicTacToe
 			}
 		}
 
+		public void Reset()
+		{
+			foreach(FieldCell cell in cells)
+			{
+				cell.OwnedBy = Player.None;
+			}
+		}
+
 		public List<FieldCell> FindFreeCells()
 		{
 			List<FieldCell> freeCells = new List<FieldCell>();
@@ -45,6 +54,14 @@ namespace TicTacToe
 		}
 
 		public FieldCell this[int x, int y] => cells[x, y];
+
+		public override string ToString()
+		{
+			return string.Join("\n", cells.OfType<FieldCell>()
+				.Select((value, index) => new { value, index })
+				.GroupBy(x => x.index / cells.GetLength(1))
+				.Select(x => $"{{{string.Join(",", x.Select(y => y.value))}}}"));
+		}
 
 		public bool FindWinner(FieldCell lastCell)
 		{

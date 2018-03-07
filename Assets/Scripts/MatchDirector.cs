@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 using DG.DeInspektor.Attributes;
 
 namespace TicTacToe
@@ -14,39 +15,48 @@ namespace TicTacToe
 		[SerializeField]
 		[DeEmptyAlert]
 		private FieldSelectorPool selectorPool;
-		private Player currentPlayer = Player.Player1;
+		[SerializeField]
+		private UnityEventPlayer matchEnded;
+		private Player currentPlayer;
 		private Dictionary<Player, IPlayer> players = new Dictionary<Player, IPlayer>();
 		private bool moveFinished = true;
-		private MatchState state = MatchState.InProgress;
+		private MatchState state;
 
 		public FieldState Field { get; private set; } = new FieldState();
 
-		private void Awake()
-		{
-			// TODO: Implement player type loading.
-			players.Add(Player.Player1, new HumanPlayer(selectorPool, Field, OnCellSelected));
-			players.Add(Player.Player2, new AIPlayer(Field, OnCellSelected, Player.Player2));
-		}
-
 		private void Start()
 		{
+			players.Add(Player.Player1, new HumanPlayer(selectorPool, Field, OnCellSelected));
+			players.Add(Player.Player2, new AIPlayer(Field, OnCellSelected, Player.Player2));
+			ResetMatch();
+		}
+
+		public void ResetMatch()
+		{
+			Field.Reset();
+			currentPlayer = Player.Player1;
+			state = MatchState.InProgress;
+			fieldVisualizer.ResetAll();
 			StartCoroutine(ProgressMatch());
 		}
 
 		private IEnumerator ProgressMatch()
 		{
+			var wait = new WaitUntil(() => moveFinished);
 			while(true)
 			{
 				moveFinished = false;
 				players[currentPlayer].MakeMove();
-				yield return new WaitUntil(() => moveFinished);
+				yield return wait;
 				if(state == MatchState.Won)
 				{
+					matchEnded.Invoke(currentPlayer);
 					Debug.Log($"{(currentPlayer == Player.Player1 ? "Player 1" : "Player 2")} won");
 					yield break;
 				}
 				else if(state == MatchState.Tie)
 				{
+					matchEnded.Invoke(Player.None);
 					Debug.Log($"Tied");
 					yield break;
 				}
@@ -56,8 +66,10 @@ namespace TicTacToe
 
 		private void OnCellSelected(FieldCell cell)
 		{
-			Field[cell.Row, cell.Column].OwnedBy = currentPlayer;
+			cell.OwnedBy = currentPlayer;
 			fieldVisualizer.UpdateCell(cell.Row, cell.Column, currentPlayer);
+			Debug.Log($"{currentPlayer} made turn {cell.Column} {cell.Row}");
+			Debug.Log(Field);
 			if(Field.FindWinner(cell))
 			{
 				state = MatchState.Won;
