@@ -26,8 +26,8 @@ namespace TicTacToe
 
 		private void Start()
 		{
-			players.Add(Player.Player1, new HumanPlayer(selectorPool, Field, OnCellSelected));
-			players.Add(Player.Player2, new AIPlayer(Field, OnCellSelected, Player.Player2));
+			PreparePlayer(Player.Player1);
+			PreparePlayer(Player.Player2);
 			ResetMatch();
 		}
 
@@ -43,9 +43,14 @@ namespace TicTacToe
 		private IEnumerator ProgressMatch()
 		{
 			var wait = new WaitUntil(() => moveFinished);
+			var delay = new WaitForSeconds(0.3f);
 			while(true)
 			{
 				moveFinished = false;
+				if(GameProfile.GetPlayerType(currentPlayer) == PlayerType.AI)
+				{
+					yield return delay;
+				}
 				players[currentPlayer].MakeMove();
 				yield return wait;
 				if(state == MatchState.Won)
@@ -68,17 +73,29 @@ namespace TicTacToe
 		{
 			cell.OwnedBy = currentPlayer;
 			fieldVisualizer.UpdateCell(cell.Row, cell.Column, currentPlayer);
-			Debug.Log($"{currentPlayer} made turn {cell.Column} {cell.Row}");
+			Debug.Log($"{GameProfile.GetPlayerType(currentPlayer)} {currentPlayer} made turn {cell.Column} {cell.Row}");
 			Debug.Log(Field);
 			if(Field.FindWinner(cell))
 			{
 				state = MatchState.Won;
 			}
-			if(Field.FindFreeCells().Count == 0)
+			else if(Field.FindFreeCells().Count == 0)
 			{
 				state = MatchState.Tie;
 			}
 			moveFinished = true;
+		}
+
+		private void PreparePlayer(Player identificator)
+		{
+			if(GameProfile.GetPlayerType(identificator) == PlayerType.Human)
+			{
+				players.Add(identificator, new HumanPlayer(selectorPool, Field, OnCellSelected));
+			}
+			else
+			{
+				players.Add(identificator, new AIPlayer(Field, OnCellSelected, identificator));
+			}
 		}
 	}
 }

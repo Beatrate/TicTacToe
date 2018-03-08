@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 using DG.DeInspektor.Attributes;
 
 namespace TicTacToe
@@ -32,6 +33,11 @@ namespace TicTacToe
 		{
 			interfaceObject.SetActive(false);
 			matchResetRequested.Invoke();
+		}
+
+		public void OnExit()
+		{
+			SceneManager.LoadSceneAsync("Menu");
 		}
 	}
 }
