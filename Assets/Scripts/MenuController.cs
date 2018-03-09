@@ -9,19 +9,7 @@ namespace TicTacToe
 	{
 		[SerializeField]
 		[DeEmptyAlert]
-		private GameObject playPanel;
-		[SerializeField]
-		[DeEmptyAlert]
-		private TMPro.TMP_Dropdown player1Dropdown;
-		[SerializeField]
-		[DeEmptyAlert]
-		private TMPro.TMP_Dropdown player2Dropdown;
-
-		private void Start()
-		{
-			OnPlayer1Change(0);
-			OnPlayer2Change(0);
-		}
+		private GameObject playerSelectorScreen;
 
 		public void OnExit()
 		{
@@ -30,29 +18,8 @@ namespace TicTacToe
 
 		public void OnPlay()
 		{
-			playPanel.SetActive(true);
 			gameObject.SetActive(false);
-		}
-
-		public void OnCancelPlay()
-		{
-			playPanel.SetActive(false);
-			gameObject.SetActive(true);
-		}
-
-		public void OnPlayer1Change(int index)
-		{
-			GameProfile.SetPlayerType(Player.Player1, player1Dropdown.options[index].text == "human" ? PlayerType.Human : PlayerType.AI);
-		}
-
-		public void OnPlayer2Change(int index)
-		{
-			GameProfile.SetPlayerType(Player.Player2, player2Dropdown.options[index].text == "human" ? PlayerType.Human : PlayerType.AI);
-		}
-
-		public void OnContinue()
-		{
-			SceneManager.LoadSceneAsync("Field");
+			playerSelectorScreen.SetActive(true);
 		}
 	}
 }

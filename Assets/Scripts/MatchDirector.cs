@@ -56,13 +56,11 @@ namespace TicTacToe
 				if(state == MatchState.Won)
 				{
 					matchEnded.Invoke(currentPlayer);
-					Debug.Log($"{(currentPlayer == Player.Player1 ? "Player 1" : "Player 2")} won");
 					yield break;
 				}
 				else if(state == MatchState.Tie)
 				{
 					matchEnded.Invoke(Player.None);
-					Debug.Log($"Tied");
 					yield break;
 				}
 				currentPlayer = currentPlayer == Player.Player1 ? Player.Player2 : Player.Player1;
@@ -73,8 +71,6 @@ namespace TicTacToe
 		{
 			cell.OwnedBy = currentPlayer;
 			fieldVisualizer.UpdateCell(cell.Row, cell.Column, currentPlayer);
-			Debug.Log($"{GameProfile.GetPlayerType(currentPlayer)} {currentPlayer} made turn {cell.Column} {cell.Row}");
-			Debug.Log(Field);
 			if(Field.FindWinner(cell))
 			{
 				state = MatchState.Won;
