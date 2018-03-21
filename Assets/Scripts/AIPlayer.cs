@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace TicTacToe
@@ -23,7 +22,14 @@ namespace TicTacToe
 		{
 			FieldCell bestMove = new FieldCell(0, 0);
 			MinMax(ref bestMove, player, null);
-			finishCallback(bestMove);
+			MonoHost.ScheduleCoroutine(AnnounceMove(bestMove));
+		}
+
+		private IEnumerator AnnounceMove(FieldCell move)
+		{
+			yield return new WaitForSeconds(0.3f);
+			finishCallback(move);
+
 		}
 
 		private int MinMax(ref FieldCell bestMove, Player currentPlayer, FieldCell cell, int depth = 0, int alpha = int.MinValue, int beta = int.MaxValue)

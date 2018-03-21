@@ -42,14 +42,9 @@ namespace TicTacToe
 		private IEnumerator ProgressMatch()
 		{
 			var wait = new WaitUntil(() => moveFinished);
-			var delay = new WaitForSeconds(0.3f);
 			while(true)
 			{
 				moveFinished = false;
-				if(GameProfile.GetPlayerType(currentPlayer) == PlayerType.AI)
-				{
-					yield return delay;
-				}
 				players[currentPlayer].MakeMove();
 				yield return wait;
 				if(state == MatchState.Won)
