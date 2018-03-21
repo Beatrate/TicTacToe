@@ -65,7 +65,8 @@ namespace TicTacToe
 
 		public bool FindWinner(FieldCell lastCell)
 		{
-			return FindWinnerColumn(lastCell) || FindWinnerRow(lastCell) || FindWinnerDiagonal(lastCell) || FindWinnerAntidiagonal(lastCell);
+			return FindWinnerColumn(lastCell) || FindWinnerRow(lastCell) ||
+				FindWinnerDiagonal(lastCell) || FindWinnerAntidiagonal(lastCell);
 		}
 
 		private bool FindWinnerRow(FieldCell lastCell)

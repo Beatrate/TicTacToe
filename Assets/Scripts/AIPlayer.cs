@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace TicTacToe
@@ -20,26 +21,15 @@ namespace TicTacToe
 
 		public void MakeMove()
 		{
-			List<FieldCell> freeCells = field.FindFreeCells();
-			Tuple<int, FieldCell> bestMove = new Tuple<int, FieldCell>(-1000, new FieldCell(0, 0));
-			foreach(FieldCell cell in freeCells)
-			{
-				cell.OwnedBy = player;
-				int score = MinMax(player == Player.Player1 ? Player.Player2 : Player.Player1, cell);
-				if(score > bestMove.Item1)
-				{
-					bestMove = new Tuple<int, FieldCell>(score, cell);
-				}
-				cell.OwnedBy = Player.None;
-			}
-			finishCallback(bestMove.Item2);
+			FieldCell bestMove = new FieldCell(0, 0);
+			MinMax(ref bestMove, player, null);
+			finishCallback(bestMove);
 		}
 
-		private int MinMax(Player currentPlayer, FieldCell cell, int depth = 0)
+		private int MinMax(ref FieldCell bestMove, Player currentPlayer, FieldCell cell, int depth = 0, int alpha = int.MinValue, int beta = int.MaxValue)
 		{
-			++depth;
 			List<FieldCell> freeCells = field.FindFreeCells();
-			if(field.FindWinner(cell))
+			if((cell != null) && field.FindWinner(cell))
 			{
 				if(cell.OwnedBy == player)
 				{
@@ -55,29 +45,48 @@ namespace TicTacToe
 				return 0;
 			}
 
-			List<int> scores = new List<int>();
-			foreach(FieldCell freeCell in freeCells)
-			{
-				freeCell.OwnedBy = currentPlayer;
-				if(currentPlayer == player)
-				{
-					scores.Add(MinMax(player == Player.Player1 ? Player.Player2 : Player.Player1, freeCell, depth));
-				}
-				else
-				{
-					scores.Add(MinMax(player, freeCell, depth));
-				}
-				freeCell.OwnedBy = Player.None;
-
-			}
-			scores.Sort();
 			if(currentPlayer == player)
 			{
-				return scores[scores.Count - 1];
+				int score = int.MinValue;
+				foreach(FieldCell freeCell in freeCells)
+				{
+					freeCell.OwnedBy = currentPlayer;
+					if(currentPlayer == player)
+					{
+						int minmax = MinMax(ref bestMove, player == Player.Player1 ? Player.Player2 : Player.Player1, freeCell, depth + 1, alpha, beta);
+						freeCell.OwnedBy = Player.None;
+						if(minmax > score)
+						{
+							score = minmax;
+							if(depth == 0)
+							{
+								bestMove = freeCell;
+							}
+						}
+						alpha = Mathf.Max(alpha, score);
+						if(beta <= alpha)
+						{
+							break;
+						}
+					}
+				}
+				return score;
 			}
 			else
 			{
-				return scores[0];
+				int score = int.MaxValue;
+				foreach(FieldCell freeCell in freeCells)
+				{
+					freeCell.OwnedBy = currentPlayer;
+					score = Mathf.Min(score, MinMax(ref bestMove, player, freeCell, depth + 1, alpha, beta));
+					freeCell.OwnedBy = Player.None;
+					beta = Mathf.Min(beta, score);
+					if(beta <= alpha)
+					{
+						break;
+					}
+				}
+				return score;
 			}
 		}
 	}

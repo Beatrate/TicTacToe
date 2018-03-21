@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Assertions;
 using DG.DeInspektor.Attributes;
 
 namespace TicTacToe
@@ -70,6 +69,7 @@ namespace TicTacToe
 		private void OnCellSelected(FieldCell cell)
 		{
 			cell.OwnedBy = currentPlayer;
+			Debug.Log(Field);
 			fieldVisualizer.UpdateCell(cell.Row, cell.Column, currentPlayer);
 			if(Field.FindWinner(cell))
 			{
