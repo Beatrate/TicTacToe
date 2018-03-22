@@ -12,9 +12,6 @@ namespace TicTacToe
 		[DeEmptyAlert]
 		private FieldVisualizer fieldVisualizer;
 		[SerializeField]
-		[DeEmptyAlert]
-		private FieldSelectorPool selectorPool;
-		[SerializeField]
 		private UnityEventPlayer matchEnded;
 		private Player currentPlayer;
 		private Dictionary<Player, IPlayer> players = new Dictionary<Player, IPlayer>();
@@ -81,7 +78,7 @@ namespace TicTacToe
 		{
 			if(GameProfile.GetPlayerType(identificator) == PlayerType.Human)
 			{
-				players.Add(identificator, new HumanPlayer(selectorPool, Field, OnCellSelected));
+				players.Add(identificator, new HumanPlayer(fieldVisualizer, Field, OnCellSelected));
 			}
 			else
 			{

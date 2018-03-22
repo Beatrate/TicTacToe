@@ -4,20 +4,20 @@ namespace TicTacToe
 {
 	public class HumanPlayer : IPlayer
 	{
-		private FieldSelectorPool selectorPool;
+		private ICellSelectionProvider selectionProvider;
 		private FieldState field;
 		private Action<FieldCell> finishMoveCallback;
 
-		public HumanPlayer(FieldSelectorPool selectorPool, FieldState fieldState, Action<FieldCell> finishCallback)
+		public HumanPlayer(ICellSelectionProvider provider, FieldState fieldState, Action<FieldCell> finishCallback)
 		{
-			this.selectorPool = selectorPool;
+			selectionProvider = provider;
 			field = fieldState;
 			finishMoveCallback = finishCallback;
 		}
 
 		public void MakeMove()
 		{
-			selectorPool.CellSelected += HandleCellSelection;
+			selectionProvider.CellSelected += HandleCellSelection;
 		}
 
 		private void HandleCellSelection(object sender, CellSelectedEventArgs args)
@@ -26,7 +26,7 @@ namespace TicTacToe
 			{
 				return;
 			}
-			selectorPool.CellSelected -= HandleCellSelection;
+			selectionProvider.CellSelected -= HandleCellSelection;
 			finishMoveCallback(field[args.Row, args.Column]);
 		}
 	}

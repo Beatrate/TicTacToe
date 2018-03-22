@@ -1,31 +1,46 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 using DG.DeInspektor.Attributes;
 
 namespace TicTacToe
 {
-	public class FieldVisualizer : MonoBehaviour
+	public class FieldVisualizer : MonoBehaviour, ICellSelectionProvider
 	{
 		[SerializeField]
-		private Image[] cells;
+		[DeEmptyAlert]
+		private VisualCell[] cells;
 		[SerializeField]
 		[DeEmptyAlert]
-		private GameSkin skin;
+		private Button[] selectors;
+
+		public event EventHandler<CellSelectedEventArgs> CellSelected;
+
+		private void Awake()
+		{
+			for(int row = 0; row < FieldState.Dimension; ++row)
+			{
+				for(int column = 0; column < FieldState.Dimension; ++column)
+				{
+					// Prevent reference capture by the lambda.
+					int copyRow = row;
+					int copyColumn = column;
+					var coord = row * FieldState.Dimension + column;
+					selectors[row * FieldState.Dimension + column].onClick.AddListener(() => CellSelected?.Invoke(this, new CellSelectedEventArgs(copyRow, copyColumn)));
+				}
+			}
+		}
 
 		public void UpdateCell(int row, int column, Player currentPlayer)
 		{
-			Image current = cells[row * FieldState.Dimension + column];
-			current.sprite = skin.GetPlayerSprite(currentPlayer);
-			current.color = skin.GetPlayerTint(currentPlayer);
-			current.enabled = true;
+			cells[row * FieldState.Dimension + column].Owner = currentPlayer;
 		}
 
 		public void ResetAll()
 		{
-			foreach(Image image in cells)
+			foreach(VisualCell cell in cells)
 			{
-				image.enabled = false;
-				image.sprite = null;
+				cell.Owner = Player.None;
 			}
 		}
 	}
