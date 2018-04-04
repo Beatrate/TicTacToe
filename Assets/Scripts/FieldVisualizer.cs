@@ -25,7 +25,6 @@ namespace TicTacToe
 					// Prevent reference capture by the lambda.
 					int copyRow = row;
 					int copyColumn = column;
-					var coord = row * FieldState.Dimension + column;
 					selectors[row * FieldState.Dimension + column].onClick.AddListener(() => CellSelected?.Invoke(this, new CellSelectedEventArgs(copyRow, copyColumn)));
 				}
 			}
