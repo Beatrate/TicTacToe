@@ -383,66 +383,6 @@ Prefab:
       propertyPath: m_isInputParsingRequired
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 224860885683936762, guid: 45eb7deb1d76d864abba59e8c176ceee,
-        type: 2}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224860885683936762, guid: 45eb7deb1d76d864abba59e8c176ceee,
-        type: 2}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224860885683936762, guid: 45eb7deb1d76d864abba59e8c176ceee,
-        type: 2}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224860885683936762, guid: 45eb7deb1d76d864abba59e8c176ceee,
-        type: 2}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224860885683936762, guid: 45eb7deb1d76d864abba59e8c176ceee,
-        type: 2}
-      propertyPath: m_SizeDelta.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224860885683936762, guid: 45eb7deb1d76d864abba59e8c176ceee,
-        type: 2}
-      propertyPath: m_SizeDelta.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224937466204787546, guid: 45eb7deb1d76d864abba59e8c176ceee,
-        type: 2}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224937466204787546, guid: 45eb7deb1d76d864abba59e8c176ceee,
-        type: 2}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224937466204787546, guid: 45eb7deb1d76d864abba59e8c176ceee,
-        type: 2}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224937466204787546, guid: 45eb7deb1d76d864abba59e8c176ceee,
-        type: 2}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224937466204787546, guid: 45eb7deb1d76d864abba59e8c176ceee,
-        type: 2}
-      propertyPath: m_SizeDelta.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224937466204787546, guid: 45eb7deb1d76d864abba59e8c176ceee,
-        type: 2}
-      propertyPath: m_SizeDelta.y
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 45eb7deb1d76d864abba59e8c176ceee, type: 2}
   m_IsPrefabParent: 0
